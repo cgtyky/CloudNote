@@ -1,4 +1,5 @@
-﻿using System;
+﻿using deneme_git.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,11 @@ namespace deneme_git.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult CreateNote(HomeViewModel model)
+        {
+            return View(model);
         }
     }
 }

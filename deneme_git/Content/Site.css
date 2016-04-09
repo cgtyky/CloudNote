@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#editor {overflow:scroll;min-height:600px; width:100%;}
+
+.btn-toolbar{
+    margin:0 auto;
+}
