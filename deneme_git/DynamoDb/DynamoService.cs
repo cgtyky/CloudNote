@@ -12,7 +12,7 @@ namespace CloudNoteV1.AWS.DynamoDb
 
         public DynamoService()
         {
-             DynamoClient = new AmazonDynamoDBClient();
+            DynamoClient = new AmazonDynamoDBClient();
 
             DbContext = new DynamoDBContext(DynamoClient, new DynamoDBContextConfig
             {
