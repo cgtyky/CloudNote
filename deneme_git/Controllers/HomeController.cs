@@ -16,14 +16,14 @@ namespace deneme_git.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "CloudNote v0.1 (Beta)";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "CloudNote contact info";
 
             return View();
         }
