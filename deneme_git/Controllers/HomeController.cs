@@ -33,6 +33,12 @@ namespace CloudNoteV1.Controllers
             return View(model);
         }
 
+        public ActionResult CreateAdvancedNote(HomeViewModel model)
+        {
+            return View(model);
+        }
+
+
         public ActionResult MyNotes()
         {
             return View();

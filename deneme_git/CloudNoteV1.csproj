@@ -290,6 +290,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\CreateNote.cshtml" />
     <Content Include="Views\Home\MyNotes.cshtml" />
+    <Content Include="Views\Home\CreateAdvancedNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
