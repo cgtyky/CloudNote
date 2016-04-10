@@ -38,10 +38,22 @@ namespace CloudNoteV1.Controllers
             return View(model);
         }
 
+        public ActionResult CreateToDoList()
+        {
+            return View();
+        }
 
         public ActionResult MyNotes()
         {
             return View();
         }
+
+        public ActionResult SharedNotes()
+        {
+            return View();
+        }
+
+
+
     }
 }
