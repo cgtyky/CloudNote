@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public class BundleConfig
     {
@@ -21,14 +21,12 @@ namespace deneme_git
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/jquery.hotkeys.js",
-                      "~/Scripts/bootstrap-wysiwyg.js",
                       "~/Scripts/respond.js"));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/_css/font-awesome.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/site/css").Include(
+                        "~/Content/bootstrap/bootstrap.css",
+                        "~/Content/_css/font-awesome.css",
+                        "~/Content/_css/site.css"
+                    ));
 
             bundles.Add(new StyleBundle("~/Content/summernote").Include(
                "~/Content/summernote/summernote.css"

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(deneme_git.Startup))]
-namespace deneme_git
+[assembly: OwinStartupAttribute(typeof(CloudNoteV1.Startup))]
+namespace CloudNoteV1
 {
     public partial class Startup
     {

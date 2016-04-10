@@ -8,9 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using deneme_git.Models;
+using CloudNoteV1.Models;
 
-namespace deneme_git.Controllers
+namespace CloudNoteV1.Controllers
 {
     [Authorize]
     public class AccountController : Controller

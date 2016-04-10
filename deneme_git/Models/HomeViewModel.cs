@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Amazon.DynamoDBv2.DataModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace deneme_git.Models
+namespace CloudNoteV1.Models
 {
+    [DynamoDBTable("CloudNoteDb")]
     public class HomeViewModel
     {
+        [DynamoDBHashKey]
         public string Title { get; set; }
+
         public string Content { get; set; }
+
+        [DynamoDBRangeKey]
+        public int submissionDate { get; set; }
     }
 }

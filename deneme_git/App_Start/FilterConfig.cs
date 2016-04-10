@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public class FilterConfig
     {
