@@ -8,7 +8,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public class MvcApplication : System.Web.HttpApplication
     {

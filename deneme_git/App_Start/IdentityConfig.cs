@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using deneme_git.Models;
+using CloudNoteV1.Models;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public class EmailService : IIdentityMessageService
     {

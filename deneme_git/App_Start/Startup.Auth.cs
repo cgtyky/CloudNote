@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using deneme_git.Models;
+using CloudNoteV1.Models;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public partial class Startup
     {

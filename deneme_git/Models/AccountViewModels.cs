@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace deneme_git.Models
+namespace CloudNoteV1.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

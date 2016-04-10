@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace deneme_git
+namespace CloudNoteV1
 {
     public class RouteConfig
     {
