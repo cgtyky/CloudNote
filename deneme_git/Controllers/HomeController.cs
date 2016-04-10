@@ -32,5 +32,10 @@ namespace CloudNoteV1.Controllers
         {
             return View(model);
         }
+
+        public ActionResult MyNotes()
+        {
+            return View();
+        }
     }
 }

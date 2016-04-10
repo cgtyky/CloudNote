@@ -24,12 +24,15 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Create Note", "CreateNote", "Home")</li>
-                    <li>@Html.ActionLink("Read Notes", "ReadNote", "Home")</li>
+                    <li>@Html.ActionLink("My Notes", "MyNotes", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
+
+        
+
         </div>
     </div>
     <div class="container body-content">
@@ -39,6 +42,7 @@
             <p>&copy; @DateTime.Now.Year - CloudNote</p>
         </footer>
     </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
