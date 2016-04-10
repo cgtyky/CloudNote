@@ -3,6 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using CloudNoteV1.AWS.DynamoDb;
+using Amazon.DynamoDBv2.Model;
+using System.Collections.Generic;
 
 namespace CloudNoteV1.Models
 {
@@ -20,9 +23,25 @@ namespace CloudNoteV1.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        DynamoService ds;
+
+        public ApplicationDbContext() /*: base("DefaultConnection", throwIfV1Schema: false)*/
         {
+            try
+            {
+                ds = new DynamoService();
+                /* deneme kodu
+                Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
+                dc.Add("user_id", new AttributeValue("ss"));
+                ds.DynamoClient.PutItem("UserDb", dc);
+                */
+            }
+            catch(System.Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+            }
+            
+            
         }
 
         public static ApplicationDbContext Create()

@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using CloudNoteV1.Models;
+using Amazon.DynamoDBv2.DataModel;
 
 namespace CloudNoteV1
 {
