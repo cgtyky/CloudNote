@@ -43,11 +43,12 @@ namespace CloudNoteV1.Controllers
             long dateInMilliseconds = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
             Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
             dc.Add("item_id", new AttributeValue(dateInMilliseconds.ToString()));
-            dc.Add("Title", new AttributeValue(msgContent));
-            dc.Add("Content", new AttributeValue(msgTitle));
+            dc.Add("Title", new AttributeValue(msgTitle));
+            dc.Add("Content", new AttributeValue(msgContent));
             dc.Add("Username", new AttributeValue("default"));
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
-          
+
+            ds = null;
           
             return View(model);
         }
@@ -76,6 +77,35 @@ namespace CloudNoteV1.Controllers
         {
             return View();
         }
+
+        public List<HomeViewModel> RetrieveNotes()
+        {
+            DynamoService ds = new DynamoService();
+            List<HomeViewModel> list = new List<HomeViewModel>();
+
+            List<string> attrToGet = new List<string>();
+            attrToGet.Add("Title");
+            attrToGet.Add("Content");
+
+            ScanResponse res = ds.DynamoClient.Scan("CloudNoteDb", attrToGet);
+
+            
+            for (int i = 0; i < res.ScannedCount; i++)
+            {
+
+            }
+            //Dictionary<string, AttributeValue> dict = new Dictionary<string, AttributeValue>();
+            //List<HomeViewModel> list = (List<HomeViewModel>)ds.GetAll<HomeViewModel>();
+
+            return list;
+        }
+
+        public ActionResult GetNotes()
+        {
+            return View(RetrieveNotes());
+        }
+
+      
 
 
 

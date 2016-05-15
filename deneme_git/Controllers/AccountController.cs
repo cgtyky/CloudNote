@@ -9,12 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CloudNoteV1.Models;
+using CloudNoteV1.AWS.DynamoDb;
+using System.Collections.Generic;
+using Amazon.DynamoDBv2.Model;
 
 namespace CloudNoteV1.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private DynamoService ds;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -149,10 +153,29 @@ namespace CloudNoteV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email,PasswordHash = model.Password };
+
+                try
+                {
+                    ds = new DynamoService();
+                    
+                    Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
+                    dc.Add("user_id", new AttributeValue(user.Email));
+                    dc.Add("name", new AttributeValue(user.UserName));
+                    dc.Add("password", new AttributeValue(user.PasswordHash));
+                    ds.DynamoClient.PutItem("UserDb", dc);
+                    
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message);
+                }
+
+                /*var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -162,10 +185,10 @@ namespace CloudNoteV1.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    
                     return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
+                AddErrors(result);*/
             }
 
             // If we got this far, something failed, redisplay form
