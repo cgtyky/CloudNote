@@ -26,7 +26,7 @@ namespace CloudNoteV1.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -38,9 +38,9 @@ namespace CloudNoteV1.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -67,6 +67,7 @@ namespace CloudNoteV1.Controllers
 
         //
         // POST: /Account/Login
+        //public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -80,6 +81,41 @@ namespace CloudNoteV1.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+
+
+            //Get User Table from AWS
+
+            var result = SignInStatus.Failure;
+
+            Dictionary<string, AttributeValue> dc = new Dictionary<string, AttributeValue>();
+            dc.Add("user_id", new AttributeValue(model.Email));
+
+            try
+            {
+                ds = new DynamoService();
+
+                GetItemResponse response = ds.DynamoClient.GetItem("UserDb", dc);
+
+                if (response.Item.Count > 0 && response.Item["password"].S == model.Password)
+                {
+                    //TODO
+                    //AuthenticationManager.SignIn();
+
+                    result = SignInStatus.Success;
+
+                }
+                else
+                    result = SignInStatus.Failure;
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                result = SignInStatus.Failure;
+            }
+
+
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -94,6 +130,7 @@ namespace CloudNoteV1.Controllers
                     return View(model);
             }
         }
+
 
         //
         // GET: /Account/VerifyCode
@@ -124,7 +161,7 @@ namespace CloudNoteV1.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -153,22 +190,22 @@ namespace CloudNoteV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
-                
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email,PasswordHash = model.Password };
+
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PasswordHash = model.Password };
 
                 try
                 {
                     ds = new DynamoService();
-                    
+
                     Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
                     dc.Add("user_id", new AttributeValue(user.Email));
                     dc.Add("name", new AttributeValue(user.UserName));
                     dc.Add("password", new AttributeValue(user.PasswordHash));
                     ds.DynamoClient.PutItem("UserDb", dc);
-                    
+
                 }
                 catch (System.Exception ex)
                 {
