@@ -117,14 +117,15 @@ namespace CloudNoteV1.Controllers
             foreach (KeyValuePair<string, AttributeValue> kvp in attributeList)
             {
                 string attributeName = kvp.Key;
+                
                 AttributeValue value = kvp.Value;
                 if (attributeName.Equals("Title"))
                 {
-                    returnModel.Title = value.ToString();
+                    returnModel.Title = value.S;
                 }
                 else if (attributeName.Equals("Content"))
                 {
-                    returnModel.Content = value.ToString();
+                    returnModel.Content = value.S;
                 }
 
             }

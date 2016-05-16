@@ -80,13 +80,13 @@ namespace CloudNoteV1.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
 
 
             //Get User Table from AWS
 
-            result = SignInStatus.Failure;
+            var result = SignInStatus.Failure;
 
             Dictionary<string, AttributeValue> dc = new Dictionary<string, AttributeValue>();
             dc.Add("user_id", new AttributeValue(model.Email));
