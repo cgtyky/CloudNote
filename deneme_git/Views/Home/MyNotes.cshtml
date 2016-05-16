@@ -7,29 +7,34 @@
 <div class="container">
     <h2>My Notes</h2>
     <br />
-    <table class="table table-bordered">
+    <p>
+        <b>Search Notes:</b> @Html.TextBox("SearchString") <br />
+        <br />
+        <br />
+        </p>
+        <table class="table table-bordered" style="background-color:#f2f2f2">
 
-        <tr>
-            <th class="col-lg-3">Title</th>
-            <th class="col-lg-5">Content</th>
-            <th class="col-lg-2">Submission Date</th>
-            <th class="col-lg-2"></th>
-
-        </tr>
-        @foreach (var item in Model)
-            {
             <tr>
+                <th class="col-lg-3">Title</th>
+                <th class="col-lg-5">Content</th>
+                <th class="col-lg-2">Submission Date</th>
+                <th class="col-lg-2"></th>
 
-                <td class="someCssStyle">@item.Title</td>
-                <td class="someCssStyle">@item.Content</td>
-                <td class="someCssStyle">@item.SubmissionDate</td>
-               <td>
-                   <button type="button" class="delete" data-id="@item.Title">Show</button>
-                   <button type="button" class="delete" data-id="@item.Title">Edit</button>
-                   <button type="button" class="delete" data-id="@item.Title">Delete</button>
-               </td> 
-           </tr>
-        }
-    </table>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td class="someCssStyle">@item.Title</td>
+                    <td class="someCssStyle">@item.Content</td>
+                    <td class="someCssStyle">@item.SubmissionDate</td>
+                    <td>
+                        <button type="button" class="delete" data-id="@item.Title">Show</button>
+                        <button type="button" class="delete" data-id="@item.Title">Edit</button>
+                        <button type="button" class="delete" data-id="@item.Title">Delete</button>
+                    </td>
+                </tr>
+            }
+        </table>
 
 </div>
