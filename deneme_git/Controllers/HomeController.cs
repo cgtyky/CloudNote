@@ -47,7 +47,7 @@ namespace CloudNoteV1.Controllers
             dc.Add("Content", new AttributeValue(msgContent));
             dc.Add("Username", new AttributeValue("default"));
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
-
+       
             ds = null;
           
             return View(model);
@@ -70,7 +70,8 @@ namespace CloudNoteV1.Controllers
 
         public ActionResult MyNotes()
         {
-            return View();
+            List<HomeViewModel> listResult = RetrieveNotes();
+            return View(listResult);
         }
 
         public ActionResult SharedNotes()
@@ -89,10 +90,20 @@ namespace CloudNoteV1.Controllers
 
             ScanResponse res = ds.DynamoClient.Scan("CloudNoteDb", attrToGet);
 
-            
+            //foreach (Dictionary<string, AttributeValue> item
+            //      in res.Items)
+            //{
+            //    item.Values.
+            //    PrintItem(item);
+            //}
+
             for (int i = 0; i < res.ScannedCount; i++)
             {
-
+                HomeViewModel hvm = new HomeViewModel();
+                hvm.Title = "Title";    // buraya res objesinin içindeki title
+                hvm.Content = "Content"; // buraya res objesinin içindeki contet gelecek
+                hvm.SubmissionDate = 123;
+                list.Add(hvm);
             }
             //Dictionary<string, AttributeValue> dict = new Dictionary<string, AttributeValue>();
             //List<HomeViewModel> list = (List<HomeViewModel>)ds.GetAll<HomeViewModel>();
@@ -104,9 +115,6 @@ namespace CloudNoteV1.Controllers
         {
             return View(RetrieveNotes());
         }
-
-      
-
 
 
     }

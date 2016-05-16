@@ -2,22 +2,30 @@
 @{
     ViewBag.Title = "My Notes";
 }
+@model List<CloudNoteV1.Models.HomeViewModel>
 
-    <div class="container">
-        <h2>My Notes</h2>
-       <br />
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="col-lg-3">Title</th>
-                    <th class="col-lg-5">Content</th>
-                    <th class="col-lg-2">Submission Date</th>
-                    <th class="col-lg-2"></th>
-                </tr>
-            </thead>
-            <tbody>
-         
-            </tbody>
-        </table>
-    </div>
+<div class="container">
+    <h2>My Notes</h2>
+    <br />
+    <table class="table table-bordered">
 
+        <tr>
+            <th class="col-lg-3">Title</th>
+            <th class="col-lg-5">Content</th>
+            <th class="col-lg-2">Submission Date</th>
+            <th class="col-lg-2"></th>
+
+        </tr>
+        @foreach (var item in Model)
+            {
+            <tr>
+
+                <td class="someCssStyle">@item.Title</td>
+                <td class="someCssStyle">@item.Content</td>
+                <td class="someCssStyle">@item.SubmissionDate</td>
+                <td onclick="location.href = '@(Url.Action("Edit", "Delete"))'"></td>
+           </tr>
+        }
+    </table>
+
+</div>
