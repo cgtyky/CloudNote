@@ -23,7 +23,11 @@
                 <td class="someCssStyle">@item.Title</td>
                 <td class="someCssStyle">@item.Content</td>
                 <td class="someCssStyle">@item.SubmissionDate</td>
-                <td onclick="location.href = '@(Url.Action("Edit", "Delete"))'"></td>
+               <td>
+                   <button type="button" class="delete" data-id="@item.Title">Show</button>
+                   <button type="button" class="delete" data-id="@item.Title">Edit</button>
+                   <button type="button" class="delete" data-id="@item.Title">Delete</button>
+               </td> 
            </tr>
         }
     </table>

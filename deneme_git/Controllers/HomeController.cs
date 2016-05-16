@@ -99,16 +99,36 @@ namespace CloudNoteV1.Controllers
 
             for (int i = 0; i < res.ScannedCount; i++)
             {
+                Dictionary<string, AttributeValue> item = res.Items[i];
+               
                 HomeViewModel hvm = new HomeViewModel();
-                hvm.Title = "Title";    // buraya res objesinin içindeki title
-                hvm.Content = "Content"; // buraya res objesinin içindeki contet gelecek
-                hvm.SubmissionDate = 123;
+                hvm = LogItem(item);
                 list.Add(hvm);
             }
             //Dictionary<string, AttributeValue> dict = new Dictionary<string, AttributeValue>();
             //List<HomeViewModel> list = (List<HomeViewModel>)ds.GetAll<HomeViewModel>();
 
             return list;
+        }
+
+        private HomeViewModel LogItem(Dictionary<string, AttributeValue> attributeList)
+        {
+            HomeViewModel returnModel = new HomeViewModel();
+            foreach (KeyValuePair<string, AttributeValue> kvp in attributeList)
+            {
+                string attributeName = kvp.Key;
+                AttributeValue value = kvp.Value;
+                if (attributeName.Equals("Title"))
+                {
+                    returnModel.Title = value.ToString();
+                }
+                else if (attributeName.Equals("Content"))
+                {
+                    returnModel.Content = value.ToString();
+                }
+
+            }
+            return returnModel;
         }
 
         public ActionResult GetNotes()

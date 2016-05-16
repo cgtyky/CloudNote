@@ -86,7 +86,7 @@ namespace CloudNoteV1.Controllers
 
             //Get User Table from AWS
 
-            var result = SignInStatus.Failure;
+            result = SignInStatus.Failure;
 
             Dictionary<string, AttributeValue> dc = new Dictionary<string, AttributeValue>();
             dc.Add("user_id", new AttributeValue(model.Email));
