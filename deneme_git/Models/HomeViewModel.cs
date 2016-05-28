@@ -14,5 +14,7 @@ namespace CloudNoteV1.Models
 
         [DynamoDBRangeKey]
         public int SubmissionDate { get; set; }
+
+        public string Owner { get; set; }
     }
 }

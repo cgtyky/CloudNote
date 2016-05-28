@@ -12,6 +12,7 @@ using CloudNoteV1.Models;
 using CloudNoteV1.AWS.DynamoDb;
 using System.Collections.Generic;
 using Amazon.DynamoDBv2.Model;
+using System.Web.Security;
 
 namespace CloudNoteV1.Controllers
 {
@@ -73,16 +74,11 @@ namespace CloudNoteV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-
-
 
             //Get User Table from AWS
 
@@ -99,11 +95,11 @@ namespace CloudNoteV1.Controllers
 
                 if (response.Item.Count > 0 && response.Item["password"].S == model.Password)
                 {
-                    //TODO
-                    //AuthenticationManager.SignIn();
-
                     result = SignInStatus.Success;
-
+                    
+                    FormsAuthentication.SetAuthCookie(model.Email, false);
+                    FormsAuthentication.RedirectFromLoginPage(model.Email, false);
+                    
                 }
                 else
                     result = SignInStatus.Failure;
@@ -132,6 +128,34 @@ namespace CloudNoteV1.Controllers
         }
 
 
+        /*
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+        switch (result)
+        {
+            case SignInStatus.Success:
+                return RedirectToLocal(returnUrl);
+            case SignInStatus.LockedOut:
+                return View("Lockout");
+            case SignInStatus.RequiresVerification:
+                return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            case SignInStatus.Failure:
+            default:
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+        }
+    }
+
+    */
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -452,7 +476,8 @@ namespace CloudNoteV1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            FormsAuthentication.SignOut();
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 

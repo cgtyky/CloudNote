@@ -35,21 +35,22 @@ namespace CloudNoteV1.Controllers
         public ActionResult SaveNote(HomeViewModel model)
         {
             DynamoService ds;
-            
+
             ds = new DynamoService();
             string msgContent = Regex.Replace(model.Content, "<.*?>", string.Empty);
             string msgTitle = Regex.Replace(model.Title, "<.*?>", string.Empty);
+            string activeUser = User.Identity.Name;
             DateTime now = DateTime.Now;
             long dateInMilliseconds = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
             Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
             dc.Add("item_id", new AttributeValue(dateInMilliseconds.ToString()));
             dc.Add("Title", new AttributeValue(msgTitle));
             dc.Add("Content", new AttributeValue(msgContent));
-            dc.Add("Username", new AttributeValue("default"));
+            dc.Add("Owner", new AttributeValue(activeUser));
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
-       
+
             ds = null;
-          
+
             return View(model);
         }
         [ValidateInput(false)]
@@ -81,29 +82,31 @@ namespace CloudNoteV1.Controllers
 
         public List<HomeViewModel> RetrieveNotes()
         {
+            string activeUser = "";
+            Dictionary<string, AttributeValue> item = null;
             DynamoService ds = new DynamoService();
             List<HomeViewModel> list = new List<HomeViewModel>();
 
             List<string> attrToGet = new List<string>();
             attrToGet.Add("Title");
             attrToGet.Add("Content");
+            attrToGet.Add("Owner");
+
+            if (User.Identity.IsAuthenticated)
+                activeUser = User.Identity.Name;
+            else
+                activeUser = "";
 
             ScanResponse res = ds.DynamoClient.Scan("CloudNoteDb", attrToGet);
 
-            //foreach (Dictionary<string, AttributeValue> item
-            //      in res.Items)
-            //{
-            //    item.Values.
-            //    PrintItem(item);
-            //}
-
             for (int i = 0; i < res.ScannedCount; i++)
             {
-                Dictionary<string, AttributeValue> item = res.Items[i];
-               
-                HomeViewModel hvm = new HomeViewModel();
-                hvm = LogItem(item);
-                list.Add(hvm);
+                if (res.Items[i]["Owner"].S == activeUser)
+                {
+                    item = res.Items[i];
+
+                    list.Add(LogItem(item));
+                }
             }
             //Dictionary<string, AttributeValue> dict = new Dictionary<string, AttributeValue>();
             //List<HomeViewModel> list = (List<HomeViewModel>)ds.GetAll<HomeViewModel>();
@@ -117,7 +120,7 @@ namespace CloudNoteV1.Controllers
             foreach (KeyValuePair<string, AttributeValue> kvp in attributeList)
             {
                 string attributeName = kvp.Key;
-                
+
                 AttributeValue value = kvp.Value;
                 if (attributeName.Equals("Title"))
                 {
