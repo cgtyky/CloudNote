@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated)
 {
 
+    
 
     <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -20,8 +22,9 @@
 
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
+        
         @Html.AntiForgeryToken()
-
+        
         <ul class="nav navbar-nav navbar-right">
             <li>
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "MyNotes", "Home")
@@ -38,7 +41,7 @@ else
 
 
 
-        <li>@Html.ActionLink("About"  + User.Identity.GetUserName(), "About", "Home")</li>
+        <li>@Html.ActionLink("About" + User.Identity.GetUserName(), "About", "Home")</li>
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
     </ul>
 

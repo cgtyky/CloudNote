@@ -12,8 +12,7 @@ namespace CloudNoteV1.Models
 
         public string Content { get; set; }
 
-        [DynamoDBRangeKey]
-        public int SubmissionDate { get; set; }
+        public string SubmissionDate { get; set; }
 
         public string Owner { get; set; }
     }

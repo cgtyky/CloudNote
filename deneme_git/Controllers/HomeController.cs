@@ -47,6 +47,7 @@ namespace CloudNoteV1.Controllers
             dc.Add("Title", new AttributeValue(msgTitle));
             dc.Add("Content", new AttributeValue(msgContent));
             dc.Add("Owner", new AttributeValue(activeUser));
+            dc.Add("SubmissionDate", new AttributeValue(DateTime.Now.ToString("dd/MM/yyyy HH:mm")));
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
 
             ds = null;
@@ -77,7 +78,8 @@ namespace CloudNoteV1.Controllers
 
         public ActionResult SharedNotes()
         {
-            return View();
+            List<HomeViewModel> listResult = RetrieveSharedNotes();
+            return View(listResult);
         }
 
         public List<HomeViewModel> RetrieveNotes()
@@ -91,6 +93,7 @@ namespace CloudNoteV1.Controllers
             attrToGet.Add("Title");
             attrToGet.Add("Content");
             attrToGet.Add("Owner");
+            attrToGet.Add("SubmissionDate");
 
             if (User.Identity.IsAuthenticated)
                 activeUser = User.Identity.Name;
@@ -114,6 +117,40 @@ namespace CloudNoteV1.Controllers
             return list;
         }
 
+        public List<HomeViewModel> RetrieveSharedNotes()
+        {
+            string activeUser = "";
+            Dictionary<string, AttributeValue> item = null;
+            DynamoService ds = new DynamoService();
+            List<HomeViewModel> list = new List<HomeViewModel>();
+
+            List<string> attrToGet = new List<string>();
+            attrToGet.Add("Title");
+            attrToGet.Add("Content");
+            attrToGet.Add("Owner");
+            attrToGet.Add("SharedWith");
+            attrToGet.Add("SubmissionDate");
+
+            if (User.Identity.IsAuthenticated)
+                activeUser = User.Identity.Name;
+            else
+                activeUser = "";
+
+            ScanResponse res = ds.DynamoClient.Scan("CloudNoteDb", attrToGet);
+
+            for (int i = 0; i < res.ScannedCount; i++)
+            {
+                if (res.Items[i].ContainsKey("SharedWith") && res.Items[i]["SharedWith"].S.Contains(activeUser))
+                {
+                    item = res.Items[i];
+
+                    list.Add(LogItem(item));
+                }
+            }
+
+            return list;
+        }
+
         private HomeViewModel LogItem(Dictionary<string, AttributeValue> attributeList)
         {
             HomeViewModel returnModel = new HomeViewModel();
@@ -129,6 +166,14 @@ namespace CloudNoteV1.Controllers
                 else if (attributeName.Equals("Content"))
                 {
                     returnModel.Content = value.S;
+                }
+                else if(attributeName.Equals("Owner"))
+                {
+                    returnModel.Owner = value.S;
+                }
+                else if (attributeName.Equals("SubmissionDate"))
+                {
+                    returnModel.SubmissionDate = value.S;
                 }
 
             }
