@@ -1,4 +1,5 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using CloudNoteV1.AWS.DynamoDb;
 using CloudNoteV1.Models;
@@ -73,12 +74,27 @@ namespace CloudNoteV1.Controllers
 
           //  return list;
         }
-       
-        public string Delete(toDoList model)
+        
+        public string Delete(int Id)
         {
-            ds = new DynamoService();
-            ds.DeleteItem(model.Title);
-            return "Deleted successfully";
+            AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+            DynamoService ds = new DynamoService();
+
+            Dictionary<string, AttributeValue> key = new Dictionary<string, AttributeValue>
+                {
+                  { "Title", new AttributeValue { S = "asd" } }
+                };
+
+            // Create DeleteItem request
+            DeleteItemRequest request = new DeleteItemRequest
+            {
+                TableName = "ToDoList",
+                Key = key
+            };
+
+            var response = client.DeleteItemAsync(request);
+
+            return "Item Deleted Successfuly";
         }
 
         [HttpPost]
@@ -108,6 +124,7 @@ namespace CloudNoteV1.Controllers
                     dc.Add("Severity", new AttributeValue(severity));
                     dc.Add("taskStatus", new AttributeValue(taskStatus));
                     dc.Add("Owner", new AttributeValue(activeUser));
+                    dc.Add("Note_Type", new AttributeValue("ToDo List"));
                     ds.DynamoClient.PutItem("ToDoList", dc);
                     msg = "Item Successfully Added";
                     ds = null;

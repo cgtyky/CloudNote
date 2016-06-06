@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CloudNoteV1.Models
 {
-    [DynamoDBTable("ToDoList")]
+    [DynamoDBTable("CloudNoteDb")]
     public class toDoList
     {
         public int Id { get; set; }

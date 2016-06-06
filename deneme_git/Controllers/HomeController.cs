@@ -48,6 +48,7 @@ namespace CloudNoteV1.Controllers
             dc.Add("Content", new AttributeValue(msgContent));
             dc.Add("Owner", new AttributeValue(activeUser));
             dc.Add("SubmissionDate", new AttributeValue(DateTime.Now.ToString("dd/MM/yyyy HH:mm")));
+            dc.Add("Note_Type", new AttributeValue("Quick Note"));
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
 
             ds = null;
@@ -57,6 +58,40 @@ namespace CloudNoteV1.Controllers
         [ValidateInput(false)]
         public ActionResult CreateNote(HomeViewModel model)
         {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SaveAdvancedNote(HomeViewModel model)
+        {
+            DynamoService ds;
+
+            ds = new DynamoService();
+            string msgContent = Regex.Replace(model.Content, "<.*?>", string.Empty);
+            string msgTitle = Regex.Replace(model.Title, "<.*?>", string.Empty);
+            string msgSeverity = model.Severity;
+            string msgIsAlarmSetted = model.isAlarmSetted.ToString();
+            string msgSendMail = model.sendMailNotification.ToString();
+            string msgDate = model.Date;
+            string activeUser = User.Identity.Name;
+            DateTime now = DateTime.Now;
+            long dateInMilliseconds = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue> dc = new Dictionary<string, AttributeValue>();
+            dc.Add("item_id", new AttributeValue(dateInMilliseconds.ToString()));
+            dc.Add("Title", new AttributeValue(msgTitle));
+            dc.Add("Content", new AttributeValue(msgContent));
+            dc.Add("sendMailNotification", new AttributeValue(msgSendMail));
+            dc.Add("isAlarmSetted", new AttributeValue(msgIsAlarmSetted));
+            dc.Add("Severity", new AttributeValue(msgSeverity));
+            dc.Add("Date", new AttributeValue(msgDate));
+            dc.Add("Owner", new AttributeValue(activeUser));      
+            dc.Add("SubmissionDate", new AttributeValue(DateTime.Now.ToString("dd/MM/yyyy HH:mm")));
+            dc.Add("Note_Type", new AttributeValue("Advanced Note"));
+            ds.DynamoClient.PutItem("CloudNoteDb", dc);
+
+            ds = null;
+
             return View(model);
         }
 
@@ -93,6 +128,7 @@ namespace CloudNoteV1.Controllers
             attrToGet.Add("Title");
             attrToGet.Add("Content");
             attrToGet.Add("Owner");
+            attrToGet.Add("Note_Type");
             attrToGet.Add("SubmissionDate");
 
             if (User.Identity.IsAuthenticated)
@@ -111,6 +147,7 @@ namespace CloudNoteV1.Controllers
                     list.Add(LogItem(item));
                 }
             }
+
             //Dictionary<string, AttributeValue> dict = new Dictionary<string, AttributeValue>();
             //List<HomeViewModel> list = (List<HomeViewModel>)ds.GetAll<HomeViewModel>();
 
@@ -174,6 +211,11 @@ namespace CloudNoteV1.Controllers
                 else if (attributeName.Equals("SubmissionDate"))
                 {
                     returnModel.SubmissionDate = value.S;
+                }
+
+                else if (attributeName.Equals("Note_Type"))
+                {
+                    returnModel.Note_Type = value.S;
                 }
 
             }

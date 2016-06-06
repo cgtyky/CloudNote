@@ -426,9 +426,11 @@
     <Content Include="Views\Home\CreateToDoList.cshtml" />
     <Content Include="Views\Home\SharedNotes.cshtml" />
     <Content Include="Views\Home\SaveNote.cshtml" />
+    <Content Include="Views\Home\SaveAdvancedNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AdvancedNote\" />
     <Folder Include="Views\HomeViewModel\" />
     <Folder Include="Views\toDoList\" />
   </ItemGroup>

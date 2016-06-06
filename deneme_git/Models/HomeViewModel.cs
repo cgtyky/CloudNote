@@ -12,7 +12,17 @@ namespace CloudNoteV1.Models
 
         public string Content { get; set; }
 
+        public string Date { get; set; }
+
+        public string Severity { get; set; }
+
         public string SubmissionDate { get; set; }
+
+        public bool isAlarmSetted { get; set; }
+        
+        public bool sendMailNotification { get; set; }
+
+        public string Note_Type { get; set; }
 
         public string Owner { get; set; }
     }
