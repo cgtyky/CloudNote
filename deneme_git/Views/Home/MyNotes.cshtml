@@ -18,7 +18,7 @@
                 <th class="col-lg-3">Title</th>
                 <th class="col-lg-5">Content</th>
                 <th class="col-lg-2">Submission Date</th>
-                <th class="col-lg-2"></th>
+                <th class="col-lg-5"></th>
 
             </tr>
             @foreach (var item in Model)
@@ -28,10 +28,11 @@
                     <td class="someCssStyle">@item.Title</td>
                     <td class="someCssStyle">@item.Content</td>
                     <td class="someCssStyle">@item.SubmissionDate</td>
-                    <td>
-                        <button type="button" class="delete" data-id="@item.Title">Show</button>
-                        <button type="button" class="delete" data-id="@item.Title">Edit</button>
+                    <td class="someCssStyle">
+                        <button type="button" class="show" data-id="@item.Title">Show</button>
+                        <button type="button" class="edit" data-id="@item.Title">Edit</button>
                         <button type="button" class="delete" data-id="@item.Title">Delete</button>
+                        <button type="button" class="share" data-id="@item.Title">Share</button>
                     </td>
                 </tr>
             }
