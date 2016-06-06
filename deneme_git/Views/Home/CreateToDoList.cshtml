@@ -1,8 +1,71 @@
 ﻿
+@using CloudNoteV1.Models
+
+@model toDoList
+
 @{
-    ViewBag.Title = "To-Do List";
+    ViewBag.Title = "Todo List";
 }
 
-<h2>To-Do List</h2>
-<br />
-<p>The page is currently under construction.</p>
+<h2>Todo List</h2>
+
+<div id="parent" style="width:100%; float:left;">
+    <div style="float: left; width: 35%;">
+        <div>
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div>
+            @Html.TextBoxFor(model => model.Title, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+    </div>
+
+    <div style="float: left; width: 35%;">
+        <div>
+            @Html.LabelFor(model => model.TargetDate)
+        </div>
+        <div>
+            @Html.TextBoxFor(model => model.TargetDate, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(model => model.TargetDate)
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div>
+            @Html.LabelFor(model => model.Severity)
+        </div>
+        <div>
+            @Html.DropDownListFor(model => model.Severity, new List<SelectListItem>
+                    {
+                         new SelectListItem() {Text = "--Select--", Value = ""},
+                        new SelectListItem() {Text = "Low", Value = "L"},
+                        new SelectListItem() {Text = "Medium", Value = "M"},
+                        new SelectListItem() {Text = "High", Value = "H"}
+                    }, new { @class = "filterItem" })
+            @Html.ValidationMessageFor(model => model.Severity)
+        </div>
+
+        <div>
+            <input type="button" id="filterButton" name="search" value="Filter" />
+        </div>
+    </div>
+    
+</div>
+<div style="width:100%;height:30px; float:left;">
+  
+</div>
+<div style="width:100%; float:left;">
+    <table id="grid"></table>
+    <div id="pager"></div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.0.min.js"></script>
+<script src="~/Scripts/i18n/grid.locale-en.js"></script>
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+<script src="~/Scripts/TodoList.js"></script>
+
+
+
