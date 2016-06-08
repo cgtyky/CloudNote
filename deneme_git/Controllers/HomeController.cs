@@ -71,9 +71,9 @@ namespace CloudNoteV1.Controllers
             string msgContent = Regex.Replace(model.Content, "<.*?>", string.Empty);
             string msgTitle = Regex.Replace(model.Title, "<.*?>", string.Empty);
             string msgSeverity = model.Severity;
-            string msgIsAlarmSetted = model.isAlarmSetted.ToString();
+            //string msgIsAlarmSetted = model.isAlarmSetted.ToString();
             string msgSendMail = model.sendMailNotification.ToString();
-            string msgDate = model.Date;
+            string msgDate = model.SubmissionDate;
             string activeUser = User.Identity.Name;
             DateTime now = DateTime.Now;
             long dateInMilliseconds = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
@@ -82,7 +82,7 @@ namespace CloudNoteV1.Controllers
             dc.Add("Title", new AttributeValue(msgTitle));
             dc.Add("Content", new AttributeValue(msgContent));
             dc.Add("sendMailNotification", new AttributeValue(msgSendMail));
-            dc.Add("isAlarmSetted", new AttributeValue(msgIsAlarmSetted));
+            //dc.Add("isAlarmSetted", new AttributeValue(msgIsAlarmSetted));
             dc.Add("Severity", new AttributeValue(msgSeverity));
             dc.Add("Date", new AttributeValue(msgDate));
             dc.Add("Owner", new AttributeValue(activeUser));      
@@ -140,7 +140,7 @@ namespace CloudNoteV1.Controllers
 
             for (int i = 0; i < res.ScannedCount; i++)
             {
-                if (res.Items[i]["Owner"].S == activeUser)
+                if (res.Items[i]["Owner"].S == activeUser && res.Items[i]["Note_Type"].S != "ToDo List")
                 {
                     item = res.Items[i];
 
