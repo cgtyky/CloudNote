@@ -14,6 +14,7 @@ namespace CloudNoteV1.Models
 
         public string Content { get; set; }
 
+        [DynamoDBRangeKey]
         public string SubmissionDate { get; set; }
 
         public string Severity { get; set; }

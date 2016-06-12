@@ -31,9 +31,10 @@
                     <td class="someCssStyle">@item.SubmissionDate</td>
                     <td class="someCssStyle">@item.Note_Type</td>
                     <td class="someCssStyle">
-                        <button type="button" class="show" data-id="@item.Title">Show</button>             
-                        <button type="button" class="delete" data-id="@item.Title">Delete</button>
-                        <button type="button" class="share" data-id="@item.Title">Share</button>
+                        <!--<button type="submit" class="show" formaction="ShowNote" data-id="@item.Title">Show</button>             
+                        <button type="submit" class="delete" data-id="@item.Title">Delete</button>
+                        <button type="button" class="share" data-id="@item.Title">Share</button>-->
+                        @Html.ActionLink("Show", "ShowNote", "Home", new {id = item.item_id }, null)
                     </td>
                 </tr>
             }

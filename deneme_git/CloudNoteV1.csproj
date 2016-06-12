@@ -427,6 +427,7 @@
     <Content Include="Views\Home\SharedNotes.cshtml" />
     <Content Include="Views\Home\SaveNote.cshtml" />
     <Content Include="Views\Home\SaveAdvancedNote.cshtml" />
+    <Content Include="Views\Home\ShowNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

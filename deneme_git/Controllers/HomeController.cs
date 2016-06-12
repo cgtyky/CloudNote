@@ -227,6 +227,11 @@ namespace CloudNoteV1.Controllers
             return View(RetrieveNotes());
         }
 
+        public ActionResult ShowNote(string id)
+        {
+            return View(id);
+        }
+
 
     }
 }
