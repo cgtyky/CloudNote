@@ -1,6 +1,8 @@
-﻿using Amazon.DynamoDBv2.Model;
+﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using CloudNoteV1.AWS.DynamoDb;
 using CloudNoteV1.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,6 +127,7 @@ namespace CloudNoteV1.Controllers
             List<HomeViewModel> list = new List<HomeViewModel>();
 
             List<string> attrToGet = new List<string>();
+            attrToGet.Add("item_id");
             attrToGet.Add("Title");
             attrToGet.Add("Content");
             attrToGet.Add("Owner");
@@ -162,6 +165,7 @@ namespace CloudNoteV1.Controllers
             List<HomeViewModel> list = new List<HomeViewModel>();
 
             List<string> attrToGet = new List<string>();
+            attrToGet.Add("item_id");
             attrToGet.Add("Title");
             attrToGet.Add("Content");
             attrToGet.Add("Owner");
@@ -204,6 +208,10 @@ namespace CloudNoteV1.Controllers
                 {
                     returnModel.Content = value.S;
                 }
+                else if (attributeName.Equals("item_id"))
+                {
+                    returnModel.item_id = value.S;
+                }
                 else if(attributeName.Equals("Owner"))
                 {
                     returnModel.Owner = value.S;
@@ -221,6 +229,30 @@ namespace CloudNoteV1.Controllers
             }
             return returnModel;
         }
+
+        public void Delete(string jsonData)
+        {
+            
+            AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+            DynamoService ds = new DynamoService();
+
+
+            Dictionary<string, AttributeValue> key = new Dictionary<string, AttributeValue>
+                {
+                  { "item_id", new AttributeValue { S = jsonData.ToString() } }
+                };
+
+            // Create DeleteItem request
+            DeleteItemRequest request = new DeleteItemRequest
+            {
+                TableName = "CloudNoteDb",
+                Key = key
+            };
+
+            var response = client.DeleteItemAsync(request);
+          
+        }
+
 
         public ActionResult GetNotes()
         {

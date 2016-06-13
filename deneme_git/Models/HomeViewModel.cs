@@ -9,7 +9,7 @@ namespace CloudNoteV1.Models
     {
         [DynamoDBHashKey]
         public string item_id { get; set; }
-
+       
         public string Title { get; set; }
 
         public string Content { get; set; }

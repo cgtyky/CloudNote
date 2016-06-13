@@ -12,9 +12,10 @@
         <br />
         <br />
     </p>
-    <table class="table table-bordered table-responsive table-hover" style="background-color:#cccccc">
+    <table id="notesGrid" class="table table-bordered table-responsive table-hover" style="background-color:#cccccc">
 
         <tr>
+            <th class="col-lg-3">Id</th>
             <th class="col-lg-3">Title</th>
             <th class="col-lg-5">Content</th>
             <th class="col-lg-2">Submission Date</th>
@@ -24,16 +25,16 @@
         </tr>
         @for (int i = 0; i < Model.Count; i++)
             {
-            <tr>
-
+            <tr style="height:100px;">
+                <td >@Html.DisplayFor(m => m[i].item_id)</td>
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].Title)</td>
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].Content)</td>
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].SubmissionDate)</td>
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].Note_Type)</td>
-                <td class="btn">
-                    <button type="button" class="btn" onclick="showPopup('@Model[i].Title'+';'+'@Model[i].Content')">Show</button>
-                    <button type="button" class="btn" onclick="deleteItem(@i)">Delete</button>
-                    <button type="button" class="btn" onclick="shareItem()">Share</button>
+                <td >
+                    <button type="button" class="btnClass" onclick="showPopup('@Model[i].Title'+';'+'@Model[i].Content')">Show</button>
+                    <button type="button" class="btnClass" onclick="deleteItem(this)">Delete</button>
+                    <button type="button" class="btnClass" onclick="shareItem()">Share</button>
                 </td>
             </tr>
         }
@@ -51,7 +52,7 @@
         Enter E-Mail address you want to share this note...
         <br />
         <br />
-        <b>Share With :</b> <input type="text" name="shareNote" placeholder="Email Address">
+        <b>Share With :</b> <input type="text" name="shareNote" placeholder="E-Mail Address">
 
     </div>
 
@@ -75,6 +76,9 @@
     }
     function deleteItem(data) {
         console.log(data);
+        var rowData = data;
+        
+
         $("#deleteDivContent").dialog({
             height: 'auto',
             width: 400,
@@ -87,10 +91,16 @@
             buttons: {
                 "Ok": function(){
                     $("#deleteDivContent").dialog("close");
-                    var tr = $(".btn").closest('tr');
-                    var id = tr.attr('id');
-                    console.log(tr);
-                    tr[data].remove();
+                    var tr = $(".btnClass").closest('tr');
+                   
+                    rowID = rowData.parentNode.parentNode.rowIndex - 1;
+               
+                    var table = document.getElementById("notesGrid");
+                    var cellValue = table.rows[rowID + 1].cells[0].innerHTML;
+                 
+                    //alert("row" + data.parentNode.parentNode.rowIndex +" - column" + data.parentNode.cellIndex);
+                    $.post("/Home/Delete", { jsonData: cellValue });
+                    tr[rowID].remove();
                     alert("Item deleted successfully!");
                 },
                 "Cancel": function(){
