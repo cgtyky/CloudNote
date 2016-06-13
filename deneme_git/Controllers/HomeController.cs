@@ -49,6 +49,7 @@ namespace CloudNoteV1.Controllers
             dc.Add("Owner", new AttributeValue(activeUser));
             dc.Add("SubmissionDate", new AttributeValue(DateTime.Now.ToString("dd/MM/yyyy HH:mm")));
             dc.Add("Note_Type", new AttributeValue("Quick Note"));
+     
             ds.DynamoClient.PutItem("CloudNoteDb", dc);
 
             ds = null;
@@ -167,6 +168,7 @@ namespace CloudNoteV1.Controllers
             attrToGet.Add("Owner");
             attrToGet.Add("SharedWith");
             attrToGet.Add("SubmissionDate");
+      
 
             if (User.Identity.IsAuthenticated)
                 activeUser = User.Identity.Name;
