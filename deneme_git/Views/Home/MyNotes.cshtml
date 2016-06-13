@@ -12,7 +12,7 @@
         <br />
         <br />
         </p>
-        <table class="table table-bordered table-responsive table-hover" style="background-color:#cccccc">
+        <table class="table table-bordered" style="background-color:#f2f2f2">
 
             <tr>
                 <th class="col-lg-3">Title</th>
@@ -22,96 +22,21 @@
                 <th class="col-lg-5"></th>
 
             </tr>
-            @for (int i = 0; i < Model.Count; i++)
+            @foreach (var item in Model)
             {
                 <tr>
 
-                    <td class="someCssStyle">@Html.DisplayFor(m => m[i].Title)</td>
-                    <td class="someCssStyle">@Html.DisplayFor(m => m[i].Content)</td>
-                    <td class="someCssStyle">@Html.DisplayFor(m => m[i].SubmissionDate)</td>
-                    <td class="someCssStyle">@Html.DisplayFor(m => m[i].Note_Type)</td>
-                    <td class="btn">
-                        <button type="button"  class="btn"  onclick="showPopup('@Model[i].Title'+';'+'@Model[i].Content')">Show</button>             
-                        <button type="button"  class="btn" onclick="deleteItem('@Model[i].Title')">Delete</button>
-                        <button type="button"  class="btn" onclick="shareItem()" >Share</button>
+                    <td class="someCssStyle">@item.Title</td>
+                    <td class="someCssStyle">@item.Content</td>
+                    <td class="someCssStyle">@item.SubmissionDate</td>
+                    <td class="someCssStyle">@item.Note_Type</td>
+                    <td class="someCssStyle">
+                        <button type="button" class="show" data-id="@item.Title">Show</button>             
+                        <button type="button" class="delete" data-id="@item.Title">Delete</button>
+                        <button type="button" class="share" data-id="@item.Title">Share</button>
                     </td>
                 </tr>
             }
         </table>
-    <div class="table-responsive" id="divPopupContent" style="display:none">
-
-
-    </div>
-    <div class="table-responsive" id="deleteDivContent" style="display:none">
-
-
-    </div>
-
-    <div class="table-responsive" id="shareDivContent" style="display:none">
-        Enter E-Mail address you want to share this note...
-        <br />
-        <br />
-        <b>Share With :</b> <input type="text" name="shareNote" placeholder="Email Address">
-
-    </div>
 
 </div>
-
-<script type="text/javascript">
-    function showPopup(data) {
-
-        var title = data.split(";")[0];
-        var content = data.split(";")[1];
-        $("#divPopupContent").dialog({
-            height: 300,
-            width: 400,
-            modal: true,
-            title: title,
-            open: function () {
-                var markup = content;
-                $(this).html(markup);
-            }
-        });
-    }
-    function deleteItem(data) {
-        $("#deleteDivContent").dialog({
-            height: 'auto',
-            width: 400,
-            modal: true,
-            title: "Warning!",
-            open: function () {
-                var markup = "This item will be deleted. Are you sure?";
-                $(this).html(markup);
-            },
-            buttons: {
-                "Ok": function(){
-                    $("#deleteDivContent").dialog("close");
-                    var tr = $(".btn").closest('tr');
-                    tr.remove();
-                    console.log(tr);
-                    //$.post("/Home/About");
-                },
-                "Cancel": function(){
-                    $("#deleteDivContent").dialog("close");
-                }
-             }
-        });
-    }
-    function shareItem() {
-        $("#shareDivContent").dialog({
-            height: 'auto',
-            width: 'auto',
-            modal: true,
-            title: "Share a Note",
-            buttons: {
-                "Ok": function () {
-                    $("#shareDivContent").dialog("close");
-                },
-                "Cancel": function () {
-                    $("#shareDivContent").dialog("close");
-                }
-            }
-        });
-    }
-
-</script>
