@@ -131,6 +131,7 @@ namespace CloudNoteV1.Controllers
             attrToGet.Add("Title");
             attrToGet.Add("Content");
             attrToGet.Add("Owner");
+            attrToGet.Add("Severity");
             attrToGet.Add("Note_Type");
             attrToGet.Add("SubmissionDate");
 
@@ -224,6 +225,10 @@ namespace CloudNoteV1.Controllers
                 else if (attributeName.Equals("Note_Type"))
                 {
                     returnModel.Note_Type = value.S;
+                }
+                else if(attributeName.Equals("Severity"))
+                {
+                    returnModel.Severity = value.S;
                 }
 
             }

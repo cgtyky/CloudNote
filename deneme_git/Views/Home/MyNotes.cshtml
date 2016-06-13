@@ -32,7 +32,7 @@
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].SubmissionDate)</td>
                 <td class="someCssStyle">@Html.DisplayFor(m => m[i].Note_Type)</td>
                 <td >
-                    <button type="button" class="btnClass" onclick="showPopup('@Model[i].Title'+';'+'@Model[i].Content')">Show</button>
+                    <button type="button" class="btnClass" onclick="showPopup('@Model[i].Title'+';'+'@Model[i].Content'+ ';' + '@Model[i].Severity' + ';' +'@Model[i].SubmissionDate')">Show</button>
                     <button type="button" class="btnClass" onclick="deleteItem(this)">Delete</button>
                     <button type="button" class="btnClass" onclick="shareItem()">Share</button>
                 </td>
@@ -62,7 +62,15 @@
     function showPopup(data) {
 
         var title = data.split(";")[0];
-        var content = data.split(";")[1];
+        var content = "";
+        if (data.split(";")[2] == "")
+        {
+            content = "Submission Date: " + data.split(";")[3] + "</br>Content: " + data.split(";")[1];
+        }
+        else
+        {
+            content = "Submission Date: " + data.split(";")[3] + "</br>Content: " + data.split(";")[1] + "</br></br>Note Severity: " + data.split(";")[2];
+        }
         $("#divPopupContent").dialog({
             height: 300,
             width: 400,
