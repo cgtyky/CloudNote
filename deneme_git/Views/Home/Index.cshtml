@@ -13,7 +13,14 @@
     <div class="text-center">
         <p class="lead">CloudNote is a simple, free and robust note taking application which organizes everything you need.</p>
         <br />
-        <p><a href="@Url.Action("MyNotes", "Home")" class="btn btn-primary btn-lg">Start using now &raquo;</a></p>
+        @if (Request.IsAuthenticated)
+        {
+            <p><a href="@Url.Action("MyNotes", "Home")" class="btn btn-primary btn-lg">Go to my notes &raquo;</a></p>
+        }
+        else
+        {
+            <p><a href="@Url.Action("Login", "Account")" class="btn btn-primary btn-lg">Start using now &raquo;</a></p>
+        }
     </div>
 
 </div>
